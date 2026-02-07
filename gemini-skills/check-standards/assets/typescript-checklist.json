@@ -1,0 +1,173 @@
+{
+  "language": "TypeScript",
+  "version": "1.0.0",
+  "description": "TypeScript/JavaScript 코딩 표준 체크리스트",
+  "categories": [
+    {
+      "name": "타입 안전성",
+      "rules": [
+        {
+          "id": "no-any-type",
+          "name": "any 타입 사용 금지",
+          "severity": "warning",
+          "pattern": ":\\s*any\\b|<any>|as\\s+any",
+          "message": "'any' 타입 대신 구체적인 타입을 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "no-type-assertion",
+          "name": "불필요한 타입 단언 금지",
+          "severity": "info",
+          "pattern": "as\\s+[A-Z]\\w+(?!\\[)",
+          "message": "가능하면 타입 가드를 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "explicit-return-type",
+          "name": "함수 반환 타입 명시",
+          "severity": "info",
+          "pattern": "(?:async\\s+)?function\\s+\\w+\\s*\\([^)]*\\)\\s*(?!:)",
+          "message": "함수의 반환 타입을 명시적으로 지정하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "네이밍 컨벤션",
+      "rules": [
+        {
+          "id": "camelCase-variables",
+          "name": "변수명 camelCase",
+          "severity": "error",
+          "pattern": "(?:let|const|var)\\s+[A-Z][a-z]+(?:[A-Z][a-z]+)*\\s*=",
+          "message": "변수명은 camelCase를 사용하세요 (PascalCase는 클래스/타입용)",
+          "autofix": false
+        },
+        {
+          "id": "PascalCase-types",
+          "name": "타입/인터페이스명 PascalCase",
+          "severity": "error",
+          "pattern": "(?:interface|type)\\s+[a-z]",
+          "message": "타입과 인터페이스는 PascalCase를 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "UPPER_CASE-constants",
+          "name": "상수명 UPPER_SNAKE_CASE",
+          "severity": "info",
+          "pattern": "const\\s+[a-z][a-zA-Z]+\\s*=\\s*['\"`\\d]",
+          "message": "상수는 UPPER_SNAKE_CASE 사용을 고려하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "코드 품질",
+      "rules": [
+        {
+          "id": "no-console",
+          "name": "console 사용 금지",
+          "severity": "warning",
+          "pattern": "console\\.(log|warn|error|info|debug)",
+          "message": "프로덕션 코드에서 console 사용을 피하세요. 로깅 라이브러리를 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "no-debugger",
+          "name": "debugger 문 금지",
+          "severity": "error",
+          "pattern": "\\bdebugger\\b",
+          "message": "debugger 문을 제거하세요",
+          "autofix": true
+        },
+        {
+          "id": "no-alert",
+          "name": "alert/confirm/prompt 금지",
+          "severity": "error",
+          "pattern": "\\b(alert|confirm|prompt)\\s*\\(",
+          "message": "브라우저 기본 다이얼로그 대신 커스텀 UI를 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "no-magic-numbers",
+          "name": "매직 넘버 금지",
+          "severity": "info",
+          "pattern": "(?<!const\\s+\\w+\\s*=\\s*)\\b(?:[2-9]\\d{2,}|[1-9]\\d{3,})\\b",
+          "message": "매직 넘버 대신 명명된 상수를 사용하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "에러 처리",
+      "rules": [
+        {
+          "id": "no-empty-catch",
+          "name": "빈 catch 블록 금지",
+          "severity": "error",
+          "pattern": "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}",
+          "message": "catch 블록에서 에러를 처리하거나 로깅하세요",
+          "autofix": false
+        },
+        {
+          "id": "error-handling",
+          "name": "Promise 에러 처리",
+          "severity": "warning",
+          "pattern": "\\.then\\s*\\([^)]+\\)\\s*(?!\\.catch)",
+          "message": ".catch() 또는 try-catch로 Promise 에러를 처리하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "React 특화 (해당시)",
+      "rules": [
+        {
+          "id": "react-key-prop",
+          "name": "리스트 key prop",
+          "severity": "error",
+          "pattern": "\\.map\\s*\\([^)]+\\)\\s*=>\\s*<(?!Fragment)[A-Z]\\w+(?![^>]*\\bkey\\b)",
+          "message": "리스트 렌더링 시 고유한 key prop을 제공하세요",
+          "autofix": false
+        },
+        {
+          "id": "no-inline-styles",
+          "name": "인라인 스타일 지양",
+          "severity": "info",
+          "pattern": "style\\s*=\\s*\\{\\{",
+          "message": "인라인 스타일 대신 CSS 클래스나 styled-components를 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "use-memo-callback",
+          "name": "useMemo/useCallback 권장",
+          "severity": "info",
+          "pattern": "(?:onClick|onChange|onSubmit)\\s*=\\s*\\{\\s*\\([^)]*\\)\\s*=>",
+          "message": "이벤트 핸들러에 useCallback 사용을 고려하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "문서화",
+      "rules": [
+        {
+          "id": "jsdoc-public-api",
+          "name": "공개 API 문서화",
+          "severity": "info",
+          "pattern": "export\\s+(?:async\\s+)?function\\s+\\w+\\s*\\([^)]*\\)\\s*(?::\\s*\\w+)?\\s*\\{(?!\\s*/\\*\\*)",
+          "message": "공개 함수에 JSDoc 주석을 추가하세요",
+          "autofix": false
+        },
+        {
+          "id": "todo-comments",
+          "name": "TODO 주석 확인",
+          "severity": "info",
+          "pattern": "//\\s*TODO|/\\*\\s*TODO",
+          "message": "TODO 주석이 있습니다. 이슈로 전환을 고려하세요",
+          "autofix": false
+        }
+      ]
+    }
+  ]
+}

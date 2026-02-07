@@ -1,0 +1,173 @@
+{
+  "language": "Python",
+  "version": "1.0.0",
+  "description": "Python 코딩 표준 체크리스트 (PEP 8 기반)",
+  "categories": [
+    {
+      "name": "네이밍 컨벤션",
+      "rules": [
+        {
+          "id": "snake_case-functions",
+          "name": "함수명 snake_case",
+          "severity": "error",
+          "pattern": "def\\s+[a-z]+[A-Z]",
+          "message": "함수명은 snake_case를 사용하세요 (PEP 8)",
+          "autofix": false
+        },
+        {
+          "id": "snake_case-variables",
+          "name": "변수명 snake_case",
+          "severity": "warning",
+          "pattern": "(?:^|\\s)[a-z]+[A-Z][a-z]+\\s*=",
+          "message": "변수명은 snake_case를 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "PascalCase-classes",
+          "name": "클래스명 PascalCase",
+          "severity": "error",
+          "pattern": "class\\s+[a-z]",
+          "message": "클래스명은 PascalCase를 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "UPPER_CASE-constants",
+          "name": "상수명 UPPER_SNAKE_CASE",
+          "severity": "info",
+          "pattern": "^[A-Z][a-z]+(?:[A-Z][a-z]+)*\\s*=",
+          "message": "모듈 레벨 상수는 UPPER_SNAKE_CASE를 사용하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "코드 품질",
+      "rules": [
+        {
+          "id": "no-print",
+          "name": "print 문 지양",
+          "severity": "warning",
+          "pattern": "\\bprint\\s*\\(",
+          "message": "프로덕션 코드에서 print 대신 logging 모듈을 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "no-bare-except",
+          "name": "베어 except 금지",
+          "severity": "error",
+          "pattern": "except\\s*:",
+          "message": "구체적인 예외 타입을 지정하세요 (except Exception as e:)",
+          "autofix": false
+        },
+        {
+          "id": "no-mutable-default",
+          "name": "가변 기본값 인자 금지",
+          "severity": "error",
+          "pattern": "def\\s+\\w+\\s*\\([^)]*=\\s*(?:\\[\\]|\\{\\}|set\\(\\))",
+          "message": "가변 객체를 기본값으로 사용하지 마세요. None을 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "no-global",
+          "name": "global 문 지양",
+          "severity": "warning",
+          "pattern": "\\bglobal\\s+\\w+",
+          "message": "global 사용을 피하세요. 클래스나 함수 인자를 사용하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "타입 힌팅",
+      "rules": [
+        {
+          "id": "type-hints-functions",
+          "name": "함수 타입 힌트",
+          "severity": "info",
+          "pattern": "def\\s+\\w+\\s*\\([^:)]*\\)\\s*(?!->)",
+          "message": "함수에 타입 힌트를 추가하세요 (def func(x: int) -> str:)",
+          "autofix": false
+        },
+        {
+          "id": "no-any-type",
+          "name": "Any 타입 지양",
+          "severity": "info",
+          "pattern": ":\\s*Any\\b|->\\s*Any\\b",
+          "message": "가능하면 Any 대신 구체적인 타입을 사용하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "임포트",
+      "rules": [
+        {
+          "id": "no-star-import",
+          "name": "와일드카드 임포트 금지",
+          "severity": "error",
+          "pattern": "from\\s+\\S+\\s+import\\s+\\*",
+          "message": "와일드카드 임포트를 피하세요. 명시적으로 임포트하세요",
+          "autofix": false
+        },
+        {
+          "id": "import-order",
+          "name": "임포트 순서",
+          "severity": "info",
+          "pattern": "^import|^from",
+          "message": "표준 라이브러리, 서드파티, 로컬 순으로 그룹화하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "문서화",
+      "rules": [
+        {
+          "id": "docstring-functions",
+          "name": "함수 docstring",
+          "severity": "info",
+          "pattern": "def\\s+[^_]\\w+\\s*\\([^)]*\\)\\s*(?:->\\s*\\w+)?\\s*:\\s*(?!\\s*[\"']{3})",
+          "message": "공개 함수에 docstring을 추가하세요",
+          "autofix": false
+        },
+        {
+          "id": "docstring-classes",
+          "name": "클래스 docstring",
+          "severity": "info",
+          "pattern": "class\\s+\\w+[^:]*:\\s*(?!\\s*[\"']{3})",
+          "message": "클래스에 docstring을 추가하세요",
+          "autofix": false
+        },
+        {
+          "id": "todo-comments",
+          "name": "TODO 주석 확인",
+          "severity": "info",
+          "pattern": "#\\s*TODO",
+          "message": "TODO 주석이 있습니다. 이슈로 전환을 고려하세요",
+          "autofix": false
+        }
+      ]
+    },
+    {
+      "name": "보안",
+      "rules": [
+        {
+          "id": "no-eval",
+          "name": "eval/exec 금지",
+          "severity": "error",
+          "pattern": "\\b(eval|exec)\\s*\\(",
+          "message": "eval/exec는 보안 위험이 있습니다. 대안을 사용하세요",
+          "autofix": false
+        },
+        {
+          "id": "no-pickle-load",
+          "name": "신뢰할 수 없는 pickle 금지",
+          "severity": "warning",
+          "pattern": "pickle\\.load|pickle\\.loads",
+          "message": "신뢰할 수 없는 데이터에 pickle을 사용하지 마세요",
+          "autofix": false
+        }
+      ]
+    }
+  ]
+}

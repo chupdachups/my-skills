@@ -1,0 +1,117 @@
+{
+  "verdictCriteria": {
+    "approve": {
+      "label": "APPROVE",
+      "emoji": "✅",
+      "description": "코드가 병합 준비가 되었습니다.",
+      "conditions": {
+        "minOverallScore": 80,
+        "maxCriticalIssues": 0,
+        "maxHighIssues": 0,
+        "maxSecurityCritical": 0,
+        "maxSecurityHigh": 0
+      },
+      "message": "이 변경사항은 코드 품질 기준을 충족하며, 심각한 보안 문제가 없습니다. 병합을 승인합니다."
+    },
+    "request_changes": {
+      "label": "REQUEST CHANGES",
+      "emoji": "🔴",
+      "description": "병합 전 수정이 필요합니다.",
+      "conditions": {
+        "hasCriticalIssues": true,
+        "hasHighSecurityIssues": true,
+        "overallScoreBelow": 60
+      },
+      "message": "이 변경사항에는 해결해야 할 중요한 문제가 있습니다. 표시된 항목을 수정한 후 다시 리뷰를 요청해주세요."
+    },
+    "needs_discussion": {
+      "label": "NEEDS DISCUSSION",
+      "emoji": "💬",
+      "description": "추가 논의가 필요합니다.",
+      "conditions": {
+        "scoreBetween": [60, 79],
+        "hasArchitecturalConcerns": true,
+        "hasMediumIssues": true
+      },
+      "message": "이 변경사항에는 팀과 논의가 필요한 부분이 있습니다. 표시된 우려 사항에 대해 논의한 후 결정해주세요."
+    }
+  },
+  "scoreCalculation": {
+    "weights": {
+      "codeQuality": 0.30,
+      "security": 0.35,
+      "standards": 0.20,
+      "documentation": 0.15
+    },
+    "deductions": {
+      "criticalSecurity": -25,
+      "highSecurity": -15,
+      "mediumSecurity": -5,
+      "standardsError": -10,
+      "standardsWarning": -3
+    },
+    "bonuses": {
+      "noIssues": 5,
+      "wellDocumented": 5,
+      "comprehensiveTests": 5
+    }
+  },
+  "priorityLabels": {
+    "critical": {
+      "label": "CRITICAL",
+      "color": "red",
+      "emoji": "🚨",
+      "description": "즉시 수정 필요 - 병합 차단"
+    },
+    "high": {
+      "label": "HIGH",
+      "color": "orange",
+      "emoji": "🔴",
+      "description": "병합 전 수정 필요"
+    },
+    "medium": {
+      "label": "MEDIUM",
+      "color": "yellow",
+      "emoji": "🟡",
+      "description": "수정 권장 - 기술 부채 가능성"
+    },
+    "low": {
+      "label": "LOW",
+      "color": "green",
+      "emoji": "🟢",
+      "description": "개선 제안 - 선택적"
+    },
+    "info": {
+      "label": "INFO",
+      "color": "blue",
+      "emoji": "ℹ️",
+      "description": "참고 사항"
+    }
+  },
+  "categories": {
+    "security": {
+      "icon": "🔒",
+      "displayName": "보안"
+    },
+    "quality": {
+      "icon": "📊",
+      "displayName": "코드 품질"
+    },
+    "standards": {
+      "icon": "📋",
+      "displayName": "코딩 표준"
+    },
+    "performance": {
+      "icon": "⚡",
+      "displayName": "성능"
+    },
+    "documentation": {
+      "icon": "📖",
+      "displayName": "문서화"
+    },
+    "testing": {
+      "icon": "🧪",
+      "displayName": "테스트"
+    }
+  }
+}
