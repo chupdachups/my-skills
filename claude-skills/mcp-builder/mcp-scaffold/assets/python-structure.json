@@ -1,0 +1,7 @@
+{
+  "directories": ["src/{package_name}", "src/{package_name}/tools", "src/{package_name}/resources", "src/{package_name}/prompts"],
+  "files": {
+    "pyproject.toml": "[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n\n[project]\nname = \"{server-name}\"\nversion = \"0.1.0\"\nrequires-python = \">=3.10\"\ndependencies = [\"mcp>=1.0.0\"]\n\n[project.scripts]\n{server-name} = \"{package_name}:main\""
+  },
+  "notes": "package_name = server-name에서 하이픈을 언더스코어로 변환"
+}

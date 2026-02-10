@@ -1,0 +1,53 @@
+{
+  "description": "Python MCP 서버 프로젝트 구조",
+  "directories": [
+    "src",
+    "src/{package_name}",
+    "src/{package_name}/tools",
+    "src/{package_name}/resources",
+    "src/{package_name}/prompts"
+  ],
+  "files": {
+    "pyproject.toml": {
+      "template": true,
+      "variables": ["name", "description", "package_name"]
+    },
+    "src/{package_name}/__init__.py": {
+      "template": true,
+      "description": "패키지 초기화 및 main 함수 export"
+    },
+    "src/{package_name}/__main__.py": {
+      "template": true,
+      "description": "메인 진입점 - python -m 실행 지원"
+    },
+    "src/{package_name}/server.py": {
+      "template": true,
+      "description": "MCP 서버 클래스 정의"
+    },
+    "src/{package_name}/tools/__init__.py": {
+      "template": true,
+      "condition": "features.tools",
+      "description": "도구 핸들러 등록"
+    },
+    "src/{package_name}/resources/__init__.py": {
+      "template": true,
+      "condition": "features.resources",
+      "description": "리소스 핸들러 등록"
+    },
+    "src/{package_name}/prompts/__init__.py": {
+      "template": true,
+      "condition": "features.prompts",
+      "description": "프롬프트 핸들러 등록"
+    },
+    "README.md": {
+      "template": true,
+      "description": "프로젝트 문서"
+    }
+  },
+  "dependencies": [
+    "mcp>=1.0.0"
+  ],
+  "notes": {
+    "package_name": "서버 이름에서 하이픈을 언더스코어로 변환 (예: my-server -> my_server)"
+  }
+}

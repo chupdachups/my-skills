@@ -1,0 +1,91 @@
+{
+  "description": "MCP 도구 스키마 템플릿",
+  "template": {
+    "name": "tool_name",
+    "description": "도구가 수행하는 작업에 대한 명확한 설명",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "param1": {
+          "type": "string",
+          "description": "파라미터 설명"
+        },
+        "param2": {
+          "type": "number",
+          "description": "숫자 파라미터"
+        },
+        "param3": {
+          "type": "boolean",
+          "description": "불리언 파라미터",
+          "default": false
+        },
+        "param4": {
+          "type": "string",
+          "enum": ["option1", "option2", "option3"],
+          "description": "열거형 파라미터"
+        },
+        "param5": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "배열 파라미터"
+        }
+      },
+      "required": ["param1"]
+    }
+  },
+  "examples": [
+    {
+      "name": "get_weather",
+      "description": "지정된 도시의 현재 날씨 정보를 조회합니다",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "city": {
+            "type": "string",
+            "description": "날씨를 조회할 도시 이름"
+          },
+          "units": {
+            "type": "string",
+            "enum": ["celsius", "fahrenheit"],
+            "description": "온도 단위",
+            "default": "celsius"
+          }
+        },
+        "required": ["city"]
+      }
+    },
+    {
+      "name": "create_file",
+      "description": "지정된 경로에 새 파일을 생성합니다",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "파일 경로"
+          },
+          "content": {
+            "type": "string",
+            "description": "파일 내용"
+          },
+          "overwrite": {
+            "type": "boolean",
+            "description": "기존 파일 덮어쓰기 여부",
+            "default": false
+          }
+        },
+        "required": ["path", "content"]
+      }
+    }
+  ],
+  "supportedTypes": [
+    "string",
+    "number",
+    "integer",
+    "boolean",
+    "array",
+    "object"
+  ]
+}

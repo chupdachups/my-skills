@@ -1,0 +1,132 @@
+{
+  "description": "MCP 클라이언트 설정 템플릿",
+  "clients": {
+    "claude_desktop": {
+      "name": "Claude Desktop",
+      "configPaths": {
+        "macos": "~/Library/Application Support/Claude/claude_desktop_config.json",
+        "windows": "%APPDATA%\\Claude\\claude_desktop_config.json",
+        "linux": "~/.config/Claude/claude_desktop_config.json"
+      },
+      "templates": {
+        "typescript": {
+          "mcpServers": {
+            "{server-name}": {
+              "command": "node",
+              "args": ["{absolute-path}/dist/index.js"],
+              "env": {}
+            }
+          }
+        },
+        "typescript_npx": {
+          "mcpServers": {
+            "{server-name}": {
+              "command": "npx",
+              "args": ["{server-name}"],
+              "env": {}
+            }
+          }
+        },
+        "python": {
+          "mcpServers": {
+            "{server-name}": {
+              "command": "python",
+              "args": ["-m", "{package_name}"],
+              "cwd": "{absolute-path}",
+              "env": {}
+            }
+          }
+        },
+        "python_uvx": {
+          "mcpServers": {
+            "{server-name}": {
+              "command": "uvx",
+              "args": ["{server-name}"],
+              "env": {}
+            }
+          }
+        }
+      },
+      "verification": "Claude Desktop을 재시작하고 MCP 서버 아이콘(망치 모양)을 확인하세요."
+    },
+    "claude_code": {
+      "name": "Claude Code",
+      "configPaths": {
+        "project": ".claude/settings.local.json",
+        "global": "~/.claude/settings.json"
+      },
+      "templates": {
+        "typescript": {
+          "mcpServers": {
+            "{server-name}": {
+              "command": "node",
+              "args": ["{absolute-path}/dist/index.js"],
+              "env": {}
+            }
+          }
+        },
+        "python": {
+          "mcpServers": {
+            "{server-name}": {
+              "command": "python",
+              "args": ["-m", "{package_name}"],
+              "cwd": "{absolute-path}",
+              "env": {}
+            }
+          }
+        }
+      },
+      "verification": "/mcp 명령을 실행하여 연결 상태를 확인하세요."
+    }
+  },
+  "environmentVariables": {
+    "common": [
+      {
+        "name": "API_KEY",
+        "description": "외부 API 인증 키",
+        "example": "sk-xxx..."
+      }
+    ],
+    "github": [
+      {
+        "name": "GITHUB_TOKEN",
+        "description": "GitHub Personal Access Token",
+        "url": "https://github.com/settings/tokens",
+        "scopes": ["repo", "issues"]
+      }
+    ],
+    "openai": [
+      {
+        "name": "OPENAI_API_KEY",
+        "description": "OpenAI API 키",
+        "url": "https://platform.openai.com/api-keys"
+      }
+    ]
+  },
+  "troubleshooting": [
+    {
+      "issue": "서버가 연결되지 않음",
+      "solutions": [
+        "설정 파일 경로 확인",
+        "command 경로가 절대 경로인지 확인",
+        "클라이언트 재시작"
+      ]
+    },
+    {
+      "issue": "환경 변수를 찾을 수 없음",
+      "solutions": [
+        "env 섹션에 환경 변수 추가",
+        ".env 파일 경로 확인",
+        "시스템 환경 변수 설정"
+      ]
+    },
+    {
+      "issue": "권한 오류",
+      "solutions": [
+        "실행 권한 확인 (chmod +x)",
+        "Python/Node 경로 확인",
+        "가상환경 활성화 확인"
+      ]
+    }
+  ]
+}

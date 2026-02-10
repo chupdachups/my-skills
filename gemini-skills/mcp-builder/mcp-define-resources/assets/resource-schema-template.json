@@ -1,0 +1,68 @@
+{
+  "description": "MCP 리소스 스키마 템플릿",
+  "template": {
+    "uri": "scheme://path/{variable}",
+    "name": "리소스 표시 이름",
+    "description": "리소스가 제공하는 데이터에 대한 설명",
+    "mimeType": "application/json",
+    "uriTemplate": true
+  },
+  "examples": [
+    {
+      "uri": "github://repos/{owner}/{repo}",
+      "name": "GitHub 저장소",
+      "description": "지정된 GitHub 저장소의 메타데이터 (이름, 설명, 스타, 포크 수 등)",
+      "mimeType": "application/json",
+      "uriTemplate": true
+    },
+    {
+      "uri": "github://repos/{owner}/{repo}/issues",
+      "name": "저장소 이슈 목록",
+      "description": "저장소의 열린 이슈 목록을 반환합니다",
+      "mimeType": "application/json",
+      "uriTemplate": true
+    },
+    {
+      "uri": "config://settings",
+      "name": "설정",
+      "description": "현재 서버 설정 정보",
+      "mimeType": "application/json",
+      "uriTemplate": false
+    },
+    {
+      "uri": "docs://api-reference",
+      "name": "API 레퍼런스",
+      "description": "API 사용법 문서",
+      "mimeType": "text/markdown",
+      "uriTemplate": false
+    }
+  ],
+  "commonMimeTypes": [
+    {
+      "type": "application/json",
+      "description": "JSON 데이터"
+    },
+    {
+      "type": "text/plain",
+      "description": "일반 텍스트"
+    },
+    {
+      "type": "text/markdown",
+      "description": "마크다운 문서"
+    },
+    {
+      "type": "text/html",
+      "description": "HTML 문서"
+    },
+    {
+      "type": "application/xml",
+      "description": "XML 데이터"
+    }
+  ],
+  "uriPatterns": {
+    "static": "scheme://fixed-path",
+    "singleParam": "scheme://path/{param}",
+    "multiParam": "scheme://path/{param1}/{param2}",
+    "nested": "scheme://parent/{id}/child/{childId}"
+  }
+}

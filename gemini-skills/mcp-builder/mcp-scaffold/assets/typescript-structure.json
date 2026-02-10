@@ -1,0 +1,68 @@
+{
+  "description": "TypeScript MCP 서버 프로젝트 구조",
+  "directories": [
+    "src",
+    "src/tools",
+    "src/resources",
+    "src/prompts"
+  ],
+  "files": {
+    "package.json": {
+      "template": true,
+      "variables": ["name", "description"]
+    },
+    "tsconfig.json": {
+      "template": false,
+      "content": {
+        "compilerOptions": {
+          "target": "ES2022",
+          "module": "NodeNext",
+          "moduleResolution": "NodeNext",
+          "outDir": "./dist",
+          "rootDir": "./src",
+          "strict": true,
+          "esModuleInterop": true,
+          "skipLibCheck": true,
+          "forceConsistentCasingInFileNames": true,
+          "declaration": true
+        },
+        "include": ["src/**/*"],
+        "exclude": ["node_modules", "dist"]
+      }
+    },
+    "src/index.ts": {
+      "template": true,
+      "description": "메인 진입점 - 서버 시작 코드"
+    },
+    "src/server.ts": {
+      "template": true,
+      "description": "MCP 서버 클래스 정의"
+    },
+    "src/tools/index.ts": {
+      "template": true,
+      "condition": "features.tools",
+      "description": "도구 핸들러 등록"
+    },
+    "src/resources/index.ts": {
+      "template": true,
+      "condition": "features.resources",
+      "description": "리소스 핸들러 등록"
+    },
+    "src/prompts/index.ts": {
+      "template": true,
+      "condition": "features.prompts",
+      "description": "프롬프트 핸들러 등록"
+    },
+    "README.md": {
+      "template": true,
+      "description": "프로젝트 문서"
+    }
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

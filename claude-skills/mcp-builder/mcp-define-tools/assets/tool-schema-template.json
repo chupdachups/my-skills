@@ -1,0 +1,42 @@
+{
+  "template": {
+    "name": "tool_name",
+    "description": "도구 설명",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "param": {"type": "string", "description": "파라미터 설명"}
+      },
+      "required": ["param"]
+    }
+  },
+  "supportedTypes": ["string", "number", "integer", "boolean", "array", "object"],
+  "examples": [
+    {
+      "name": "get_weather",
+      "description": "지정된 도시의 현재 날씨 정보를 조회합니다",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "city": {"type": "string", "description": "도시 이름"},
+          "units": {"type": "string", "enum": ["celsius", "fahrenheit"]}
+        },
+        "required": ["city"]
+      }
+    },
+    {
+      "name": "create_issue",
+      "description": "GitHub 저장소에 새 이슈를 생성합니다",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "owner": {"type": "string", "description": "저장소 소유자"},
+          "repo": {"type": "string", "description": "저장소 이름"},
+          "title": {"type": "string", "description": "이슈 제목"},
+          "body": {"type": "string", "description": "이슈 내용"}
+        },
+        "required": ["owner", "repo", "title"]
+      }
+    }
+  ]
+}

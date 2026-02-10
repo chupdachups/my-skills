@@ -1,0 +1,41 @@
+{
+  "clients": {
+    "claude_desktop": {
+      "name": "Claude Desktop",
+      "configPaths": {
+        "macos": "~/Library/Application Support/Claude/claude_desktop_config.json",
+        "windows": "%APPDATA%\\Claude\\claude_desktop_config.json"
+      },
+      "template": {
+        "mcpServers": {
+          "{server-name}": {
+            "command": "node|python",
+            "args": ["path/to/server"],
+            "env": {}
+          }
+        }
+      }
+    },
+    "claude_code": {
+      "name": "Claude Code",
+      "configPaths": {
+        "project": ".claude/settings.local.json",
+        "global": "~/.claude/settings.json"
+      },
+      "template": {
+        "mcpServers": {
+          "{server-name}": {
+            "command": "node|python",
+            "args": ["path/to/server"]
+          }
+        }
+      },
+      "verification": "/mcp 명령으로 연결 상태 확인"
+    }
+  },
+  "troubleshooting": [
+    {"issue": "서버 연결 안됨", "solution": "절대 경로 사용, 클라이언트 재시작"},
+    {"issue": "환경 변수 없음", "solution": "env 섹션에 추가"},
+    {"issue": "권한 오류", "solution": "실행 권한 확인 (chmod +x)"}
+  ]
+}

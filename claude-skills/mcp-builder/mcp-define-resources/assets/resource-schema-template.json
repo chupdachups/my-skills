@@ -1,0 +1,30 @@
+{
+  "template": {
+    "uri": "scheme://path/{variable}",
+    "name": "리소스 이름",
+    "description": "리소스 설명",
+    "mimeType": "application/json",
+    "uriTemplate": true
+  },
+  "mimeTypes": [
+    {"type": "application/json", "description": "JSON 데이터"},
+    {"type": "text/plain", "description": "일반 텍스트"},
+    {"type": "text/markdown", "description": "마크다운 문서"}
+  ],
+  "examples": [
+    {
+      "uri": "github://repos/{owner}/{repo}",
+      "name": "GitHub 저장소",
+      "description": "저장소 메타데이터 (이름, 설명, 스타 수 등)",
+      "mimeType": "application/json",
+      "uriTemplate": true
+    },
+    {
+      "uri": "config://settings",
+      "name": "설정",
+      "description": "서버 설정 정보",
+      "mimeType": "application/json",
+      "uriTemplate": false
+    }
+  ]
+}

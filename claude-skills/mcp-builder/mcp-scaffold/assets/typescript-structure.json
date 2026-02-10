@@ -1,0 +1,36 @@
+{
+  "directories": ["src", "src/tools", "src/resources", "src/prompts"],
+  "files": {
+    "package.json": {
+      "name": "{server-name}",
+      "version": "0.1.0",
+      "type": "module",
+      "main": "dist/index.js",
+      "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "start": "node dist/index.js"
+      },
+      "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.0.0"
+      },
+      "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.0.0"
+      }
+    },
+    "tsconfig.json": {
+      "compilerOptions": {
+        "target": "ES2022",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "declaration": true
+      },
+      "include": ["src/**/*"]
+    }
+  }
+}

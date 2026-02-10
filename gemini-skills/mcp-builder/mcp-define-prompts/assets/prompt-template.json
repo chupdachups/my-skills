@@ -1,0 +1,108 @@
+{
+  "description": "MCP 프롬프트 스키마 템플릿",
+  "template": {
+    "name": "prompt_name",
+    "description": "프롬프트의 목적과 용도",
+    "arguments": [
+      {
+        "name": "argument_name",
+        "description": "인자 설명",
+        "required": true
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "프롬프트 템플릿 내용. {{argument_name}} 형식으로 변수 사용."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "name": "code_review",
+      "description": "코드를 리뷰하고 개선점을 제안합니다",
+      "arguments": [
+        {
+          "name": "code",
+          "description": "리뷰할 코드",
+          "required": true
+        },
+        {
+          "name": "language",
+          "description": "프로그래밍 언어",
+          "required": true
+        },
+        {
+          "name": "focus",
+          "description": "집중할 영역 (performance, security, readability)",
+          "required": false
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "다음 {{language}} 코드를 리뷰해주세요.\n\n```{{language}}\n{{code}}\n```\n\n{{#focus}}특히 {{focus}}에 집중해주세요.{{/focus}}\n\n다음 항목에 대해 피드백을 주세요:\n1. 코드 품질 및 가독성\n2. 잠재적 버그\n3. 개선 제안"
+        }
+      ]
+    },
+    {
+      "name": "summarize_issues",
+      "description": "GitHub 이슈 목록을 요약합니다",
+      "arguments": [
+        {
+          "name": "issues",
+          "description": "이슈 목록 (JSON 형식)",
+          "required": true
+        },
+        {
+          "name": "format",
+          "description": "출력 형식 (brief, detailed)",
+          "required": false
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "다음 GitHub 이슈들을 {{format}} 형식으로 요약해주세요:\n\n{{issues}}\n\n카테고리별로 분류하고 우선순위를 제안해주세요."
+        }
+      ]
+    },
+    {
+      "name": "generate_commit_message",
+      "description": "코드 변경사항에 대한 커밋 메시지를 생성합니다",
+      "arguments": [
+        {
+          "name": "diff",
+          "description": "git diff 출력",
+          "required": true
+        },
+        {
+          "name": "style",
+          "description": "커밋 스타일 (conventional, descriptive)",
+          "required": false
+        }
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "다음 코드 변경사항에 대해 {{style}} 스타일의 커밋 메시지를 생성해주세요:\n\n```diff\n{{diff}}\n```\n\n변경 내용을 분석하고 적절한 커밋 메시지를 제안해주세요."
+        }
+      ]
+    }
+  ],
+  "messageRoles": [
+    {
+      "role": "user",
+      "description": "사용자 메시지 - 요청, 질문, 지시사항"
+    },
+    {
+      "role": "assistant",
+      "description": "AI 응답 - 예시 응답, 형식 가이드"
+    }
+  ],
+  "variableSyntax": {
+    "basic": "{{variable}}",
+    "conditional": "{{#variable}}...{{/variable}}",
+    "iteration": "{{#items}}...{{/items}}"
+  }
+}
