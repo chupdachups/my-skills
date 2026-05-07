@@ -2,7 +2,7 @@
 name: pfd-analyze
 description: 병렬 기능 개발 결과 분석. 각 브랜치에서 지정된 분석 스킬을 병렬로 실행하고 브랜치별 결과를 비교하여 최적 구현을 추천합니다.
 user-invocable: false
-allowed-tools: Read, Write, Agent, Bash(git log *) Bash(git diff *) Bash(git worktree *)
+allowed-tools: Read, Write, Agent, Bash(git log *) Bash(git diff *) Bash(git branch *)
 ---
 
 # 병렬 기능 개발 결과 분석 (pfd-analyze)
@@ -15,74 +15,101 @@ allowed-tools: Read, Write, Agent, Bash(git log *) Bash(git diff *) Bash(git wor
 
 `.pfd-config.json`을 읽어 다음 값을 파악하세요:
 - `analyzeSkill`: 실행할 분석 스킬 이름
-- `branches`: 분석 대상 브랜치 목록
-- `worktreePaths`: 각 브랜치의 worktree 경로
-- `planFile`: 기준이 되는 PLAN 파일
+- `branches`: 분석 대상 브랜치 목록 (예: `["feature/pfd-run-1", "feature/pfd-run-2", ...]`)
+- `planFile`: 기준 PLAN 파일
 - `baseBranch`: 기준 브랜치
 - `devSkill`: 사용된 개발 스킬 이름
+- `runs`: 브랜치 수
 
-analyzeSkill이 비어 있으면 사용자에게 분석 스킬 이름을 질문하세요.
+`analyzeSkill`이 비어 있으면 사용자에게 분석 스킬 이름을 질문하고 config를 업데이트하세요.
 
-### 2. 분석 실행 안내 출력
+### 2. 분석 실행 계획 출력
 
 ```
 === 브랜치 분석 시작 ===
 분석 스킬: {analyzeSkill}
 분석 대상: {runs}개 브랜치
-  [1] {branchPrefix}-run-1
-  [2] {branchPrefix}-run-2
+  [1] {branches[0]}
+  [2] {branches[1]}
   ...
 ========================
 ```
 
-### 3. 병렬 분석 실행 (핵심)
+### 3. 병렬 분석 에이전트 실행 ★ 핵심 ★
 
-**반드시 단일 메시지에서 N개의 Agent 도구 호출을 동시에 실행하세요 (병렬).**
+**아래 규칙을 반드시 지키세요:**
+- 단일 메시지에서 Agent 도구를 **정확히 `{runs}`번** 호출하세요.
+- 각 에이전트 프롬프트는 **완전 자급자족**으로 작성합니다 (다른 스킬을 호출하지 않음).
+- 모든 Agent 호출에 `isolation: "worktree"` 옵션을 적용하세요.
 
-각 에이전트에 전달할 프롬프트 템플릿:
+**각 에이전트(i = 1부터 runs까지)에 전달할 프롬프트:**
 
-```
-당신은 코드 분석 에이전트입니다. 특정 브랜치의 구현 결과를 분석합니다.
+---
+당신은 코드 분석 에이전트 {i}/{runs}입니다.
+아래 절차를 **순서대로 빠짐없이** 완수해야 합니다.
 
-## 분석 정보
-- 브랜치명: {branchName}
+## 작업 정보
+- 분석 대상 브랜치: {branches[i-1]}
 - 기준 브랜치: {baseBranch}
 - PLAN 파일: {planFile}
-- 분석 스킬: /{analyzeSkill}
-- 실행 번호: {i} / {N}
+- 분석 스킬: {analyzeSkill}
 
-## 수행 절차
-1. 이 브랜치와 기준 브랜치의 diff를 확인하세요:
-   git diff {baseBranch}...{branchName} --stat
-   git diff {baseBranch}...{branchName}
+## 절차
 
-2. PLAN 파일을 읽어 요구사항을 파악하세요.
+### STEP 1: 분석 대상 브랜치 체크아웃
+Bash 도구로 실행하세요:
+```
+git checkout {branches[i-1]}
+git rev-parse --abbrev-ref HEAD
+```
+현재 브랜치가 `{branches[i-1]}`인지 확인하세요.
 
-3. `/{analyzeSkill}` 스킬을 호출하세요.
-
-4. 분석 완료 후 반드시 다음 형식으로 결과를 JSON으로 반환하세요:
-   {
-     "branch": "{branchName}",
-     "runIndex": {i},
-     "score": 0~100,
-     "summary": "한 줄 요약",
-     "strengths": ["강점1", "강점2"],
-     "weaknesses": ["약점1", "약점2"],
-     "planCoverage": "PLAN 요구사항 충족도 설명",
-     "recommendation": "선택 여부 의견"
-   }
+### STEP 2: 변경 범위 파악
+Bash 도구로 실행하세요:
+```
+git diff {baseBranch}...{branches[i-1]} --stat
+git diff {baseBranch}...{branches[i-1]} --name-only
 ```
 
-각 Agent 호출에 `isolation: "worktree"` 옵션을 적용하세요.
+### STEP 3: PLAN 파일 읽기
+Read 도구로 `{planFile}` 파일 전체를 읽으세요.
 
-### 4. 분석 결과 수집
+### STEP 4: 변경된 파일 읽기
+STEP 2에서 확인한 변경 파일들을 Read 도구로 읽으세요.
 
-모든 에이전트 완료 후 각 결과 JSON을 수집하세요.
-`.pfd-config.json`의 `analyzeResults` 필드에 결과 배열을 저장하세요.
+### STEP 5: 분석 스킬 실행
+Skill 도구를 사용하여 다음 스킬을 실행하세요:
+- skill: "{analyzeSkill}"
+- args: "{planFile}"
+분석이 완전히 완료될 때까지 기다리세요.
+
+### STEP 6: 분석 결과 반환
+분석 스킬 실행 결과를 바탕으로 아래 JSON을 반드시 출력하세요:
+```json
+{
+  "agentIndex": {i},
+  "branch": "{branches[i-1]}",
+  "score": 0~100 숫자,
+  "summary": "한 줄 요약",
+  "strengths": ["강점1", "강점2"],
+  "weaknesses": ["약점1", "약점2"],
+  "planCoverage": "PLAN 요구사항 충족도 설명 (예: 5개 중 4개 충족)",
+  "recommendation": "선택 여부 의견"
+}
+```
+---
+
+### 4. 분석 결과 수집 및 누락 처리
+
+모든 에이전트 완료 후 각 JSON 결과를 수집하세요.
+
+**누락된 에이전트가 있는 경우**: 해당 브랜치를 순차적으로 직접 분석하세요.
+
+수집된 결과를 `.pfd-config.json`의 `analyzeResults`에 저장하고 `status`를 `analyzed`로 업데이트하세요.
 
 ### 5. 비교 보고서 생성
 
-`references/report-format.md`를 참조하여 최종 비교 보고서를 출력하세요:
+`references/report-format.md`를 참조하여 결과를 점수 내림차순으로 정렬하고 출력하세요:
 
 ```
 ╔══════════════════════════════════════════════════╗
@@ -92,22 +119,19 @@ analyzeSkill이 비어 있으면 사용자에게 분석 스킬 이름을 질문�
 ║ PLAN 파일 : {planFile}
 ║ 개발 스킬 : {devSkill}
 ╠══════════════════════════════════════════════════╣
-║ 브랜치별 분석 결과:
+║ 순위별 결과:
 ║
-║  [1] {branchName-1}  점수: {score1}/100
-║      요약  : {summary1}
-║      강점  : {strengths1}
-║      약점  : {weaknesses1}
-║      PLAN 충족도: {planCoverage1}
+║  1위. {branch}  점수: {score}/100
+║       요약   : {summary}
+║       강점   : {strengths}
+║       약점   : {weaknesses}
+║       PLAN 충족: {planCoverage}
 ║
-║  [2] {branchName-2}  점수: {score2}/100
-║      요약  : {summary2}
-║      강점  : {strengths2}
-║      약점  : {weaknesses2}
-║      PLAN 충족도: {planCoverage2}
+║  2위. {branch}  점수: {score}/100
+║       ...
 ║
 ╠══════════════════════════════════════════════════╣
-║ ★ 추천 브랜치: {최고점수 브랜치명} (점수: {최고점수}/100)
+║ ★ 추천 브랜치: {1위 브랜치명} (점수: {score}/100)
 ║   추천 이유 : {recommendation}
 ╚══════════════════════════════════════════════════╝
 ```
@@ -115,12 +139,7 @@ analyzeSkill이 비어 있으면 사용자에게 분석 스킬 이름을 질문�
 ### 6. 다음 행동 안내
 
 ```
-분석이 완료되었습니다.
-
-추천 브랜치: {branchName}
-  git checkout {branchName}
+추천 브랜치로 PR 생성:
+  git checkout {추천 브랜치}
   gh pr create --base {baseBranch} --title "feat: {planFile} 구현"
-
-또는 다른 브랜치를 선택하려면:
-  git checkout {다른 브랜치명}
 ```
