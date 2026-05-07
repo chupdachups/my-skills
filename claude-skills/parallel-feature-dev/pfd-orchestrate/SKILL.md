@@ -58,6 +58,26 @@ allowed-tools: Read, Write, Agent, Bash(git branch *) Bash(git push *) Bash(git 
 당신은 기능 개발 에이전트 {i}/{runs}입니다.
 아래 절차를 **순서대로 빠짐없이** 완수해야 합니다. 중간에 멈추지 마세요.
 
+## ⛔ 절대 금지 규칙 (반드시 준수)
+
+다음 행동은 어떤 이유로도 금지됩니다:
+
+1. **다른 pfd 브랜치 참조 금지**
+   - `{branchPrefix}-run-{i}` 이외의 브랜치를 checkout, diff, log, show하지 마세요.
+   - 다른 브랜치의 코드를 읽거나 복사하지 마세요.
+
+2. **다른 worktree 디렉토리 접근 금지**
+   - 현재 worktree 외부의 sibling 디렉토리를 읽지 마세요.
+
+3. **미완성 시 타 브랜치 대체 금지**
+   - 개발 스킬이 완전히 완료되지 않았을 경우, 다른 브랜치 구현으로 채워넣지 마세요.
+   - 완료되지 않으면 실패(FAILED)로 보고하고 종료하세요.
+
+4. **허용된 참조 소스**
+   - `{baseBranch}` 브랜치의 기존 코드 (기준 브랜치)
+   - `{planFile}` PLAN 파일
+   - 개발 스킬이 생성한 코드
+
 ## 작업 정보
 - 목표 브랜치명: {branchPrefix}-run-{i}
 - 기준 브랜치: {baseBranch}
@@ -91,13 +111,18 @@ Skill 도구를 사용하여 다음 스킬을 실행하세요:
 - args: "{planFile}"
 스킬이 완전히 완료될 때까지 기다리세요. 스킬 내 모든 파일 생성/수정 작업이 끝난 후 다음 단계로 넘어가세요.
 
+개발 스킬이 완료되지 않거나 실패한 경우:
+- 다른 브랜치를 참조하지 마세요.
+- STEP 8로 이동하여 status: "failed"로 보고하고 종료하세요.
+
 ### STEP 5: 변경사항 확인
 Bash 도구로 실행하세요:
 ```
 git status
 git diff --stat
 ```
-변경된 파일이 없으면 "변경사항 없음"을 출력하고 STEP 6으로 넘어가세요.
+변경된 파일이 없으면 개발 스킬이 완료되지 않은 것입니다.
+이 경우 **다른 브랜치를 참조하지 말고** STEP 8로 이동하여 status: "failed", reason: "no changes after skill execution"으로 보고하세요.
 
 ### STEP 6: Commit
 Bash 도구로 실행하세요:
