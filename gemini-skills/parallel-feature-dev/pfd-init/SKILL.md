@@ -1,6 +1,6 @@
 ---
 name: pfd-init
-description: 설계서(PLAN 파일) 기반 병렬 기능 개발 시작. 동일한 PLAN 파일로 특정 개발 스킬을 N번 병렬로 실행하여 각각 별도 브랜치에 commit/push합니다. 브랜치별 결과를 비교 검토할 때 사용하세요.
+description: 설계서(PLAN 파일) 기반 병렬 기능 개발 시작. 동일한 PLAN 파일로 특정 개발 스킬을 N번 병렬로 실행하여 각각 별도 브랜치에 commit/push하고, 분석 스킬로 결과를 비교합니다.
 ---
 
 # 병렬 기능 개발 초기화 (pfd-init)
@@ -33,6 +33,9 @@ description: 설계서(PLAN 파일) 기반 병렬 기능 개발 시작. 동일�
 
 4. **브랜치 접두사를 입력하세요. (기본값: feature/pfd)**
    (예: feature/pfd → feature/pfd-run-1, feature/pfd-run-2, ...)
+
+5. **개발 완료 후 실행할 분석 스킬 이름을 입력하세요. (없으면 Enter로 스킵)**
+   (예: code-review, analyze-implementation)
 ```
 
 `assets/init-questions.md`의 질문 템플릿을 참고하세요.
@@ -61,6 +64,8 @@ description: 설계서(PLAN 파일) 기반 병렬 기능 개발 시작. 동일�
   "baseBranch": "현재 브랜치명",
   "branches": [],
   "worktreePaths": [],
+  "analyzeSkill": "입력된 분석 스킬 이름 (없으면 빈 문자열)",
+  "analyzeResults": [],
   "status": "initialized",
   "createdAt": "ISO8601 날짜"
 }
@@ -75,6 +80,7 @@ description: 설계서(PLAN 파일) 기반 병렬 기능 개발 시작. 동일�
 • 병렬 실행  : {runs}회
 • 생성 브랜치 : {branchPrefix}-run-1 ~ {branchPrefix}-run-{runs}
 • 기준 브랜치 : {baseBranch}
+• 분석 스킬  : {analyzeSkill} (미입력 시 "분석 스킵")
 ================================
 
 계속 진행하시겠습니까? (Y/N)

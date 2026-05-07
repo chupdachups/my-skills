@@ -83,10 +83,25 @@ git checkout {branchPrefix}-run-1
 git checkout {branchPrefix}-run-2
 ```
 
-### 5. 마무리 메시지
+### 5. 분석 스킬 실행 여부 확인
+
+`.pfd-config.json`의 `analyzeSkill` 값을 확인하세요:
+
+- **analyzeSkill이 설정된 경우**: 사용자에게 안내 후 `/pfd-analyze`를 호출하세요.
+  ```
+  분석 스킬 ({analyzeSkill})을 각 브랜치에 실행합니다.
+  [/pfd-analyze 호출]
+  ```
+
+- **analyzeSkill이 비어 있는 경우**: 아래 마무리 메시지를 출력하고 종료하세요.
+
+### 6. 마무리 메시지 (분석 스킵 시)
 
 ```
 총 {N}개의 브랜치가 생성되었습니다.
 각 브랜치를 직접 비교하여 가장 잘 구현된 결과를 선택하세요.
 선택한 브랜치를 {baseBranch}에 병합하려면 해당 브랜치의 PR을 생성하세요.
+
+분석 스킬을 나중에 실행하려면:
+  /pfd-analyze
 ```

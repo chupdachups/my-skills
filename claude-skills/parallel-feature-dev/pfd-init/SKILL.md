@@ -1,9 +1,9 @@
 ---
 name: pfd-init
-description: 설계서(PLAN 파일) 기반 병렬 기능 개발 시작. 동일한 PLAN 파일로 특정 개발 스킬을 N번 병렬 실행하여 각각 별도 브랜치에 commit/push합니다. 브랜치별 결과를 비교 검토할 때 사용하세요.
+description: 설계서(PLAN 파일) 기반 병렬 기능 개발 시작. 동일한 PLAN 파일로 특정 개발 스킬을 N번 병렬 실행하여 각각 별도 브랜치에 commit/push하고, 분석 스킬로 결과를 비교합니다.
 user-invocable: true
 allowed-tools: Read, Write, Bash(git branch *) Bash(git rev-parse *) Bash(git status *)
-argument-hint: "[dev-skill] [plan-file] [runs]"
+argument-hint: "[dev-skill] [plan-file] [runs] [analyze-skill]"
 ---
 
 # 병렬 기능 개발 초기화 (pfd-init)
@@ -23,6 +23,7 @@ argument-hint: "[dev-skill] [plan-file] [runs]"
 - 첫 번째 토큰 → 개발 스킬 이름 (예: `dev-back-execute-code`)
 - 두 번째 토큰 → PLAN 파일 경로 (예: `PLAN-FILE.md`)
 - 세 번째 토큰 → 병렬 실행 횟수 (숫자, 예: `3`)
+- 네 번째 토큰 → 분석 스킬 이름 (선택, 예: `code-review`)
 
 ### 2. 누락 정보 수집
 
@@ -34,6 +35,7 @@ argument-hint: "[dev-skill] [plan-file] [runs]"
 | PLAN 파일 경로 | "사용할 PLAN 파일 경로를 입력하세요:" | `docs/PLAN-FILE.md` |
 | 병렬 실행 횟수 | "병렬로 실행할 횟수를 입력하세요 (1~10):" | `3` |
 | 브랜치 접두사 | "생성할 브랜치 접두사를 입력하세요 (기본값: feature/pfd):" | `feature/pfd` |
+| 분석 스킬 이름 | "개발 완료 후 실행할 분석 스킬 이름을 입력하세요 (없으면 Enter로 스킵):" | `code-review` |
 
 ### 3. 유효성 검사
 
@@ -54,10 +56,14 @@ argument-hint: "[dev-skill] [plan-file] [runs]"
   "branchPrefix": "feature/pfd",
   "baseBranch": "main",
   "branches": [],
+  "analyzeSkill": "code-review",
+  "analyzeResults": [],
   "status": "initialized",
   "createdAt": "ISO날짜"
 }
 ```
+
+`analyzeSkill`이 입력되지 않은 경우 빈 문자열(`""`)로 저장하세요.
 
 ### 5. 실행 요약 출력
 
@@ -70,6 +76,7 @@ argument-hint: "[dev-skill] [plan-file] [runs]"
 • 병렬 실행  : {runs}회
 • 브랜치 접두사: {branchPrefix}-run-1 ~ {branchPrefix}-run-{runs}
 • 기준 브랜치: {baseBranch}
+• 분석 스킬  : {analyzeSkill} (미입력 시 "분석 스킵")
 ===========================
 ```
 

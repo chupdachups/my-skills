@@ -8,6 +8,7 @@
 | planFile | PLAN 파일 경로 | `docs/PLAN-FILE.md` |
 | runs | 병렬 실행 횟수 (1~10) | `3` |
 | branchPrefix | 브랜치 접두사 | `feature/pfd` |
+| analyzeSkill | 실행할 분석 스킬 이름 (선택) | `code-review` |
 
 ## 유효성 검사 체크리스트
 
@@ -36,6 +37,6 @@
 ## 상태 전이
 
 ```
-initialized → orchestrating → running → completed
-(pfd-init)   (pfd-orchestrate)  (pfd-worker)  (pfd-summary)
+initialized → orchestrating → running → completed → analyzed
+(pfd-init)   (pfd-orchestrate)  (pfd-worker)  (pfd-summary)  (pfd-analyze)
 ```
